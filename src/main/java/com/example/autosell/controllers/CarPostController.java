@@ -3,6 +3,7 @@ package com.example.autosell.controllers;
 
 import com.example.autosell.Setup;
 import com.example.autosell.controllers.beans.FiltrosBean;
+import com.example.autosell.controllers.beans.InteresadoCompra;
 import com.example.autosell.services.*;
 import com.example.autosell.utils.entities.Accesorio;
 import com.example.autosell.utils.errors.ResponseService;
@@ -44,6 +45,15 @@ public class CarPostController {
     @Autowired
     AccesorioService accesorioService;
 
+    @Autowired
+    GoogleService googleService;
+
+    @Value("${spreadsheet.autos}")
+    String spreadsheetAutosId;
+    @Value("${spreadsheet.interesados}")
+    String spreadsheetInteresadosId;
+
+
     @PostMapping
     @ResponseBody
     @Transactional
@@ -78,7 +88,7 @@ public class CarPostController {
                 }
             }
             autoSemiNuevo.setComprado(false);
-            autoSemiNuevo.setValidado(true);
+
             autoSemiNuevo.setEnabled(true);
             autoSemiNuevo.setFechaPublicacion(new Date());
             List<String> fotos = new ArrayList<>();
@@ -100,11 +110,16 @@ public class CarPostController {
                 autoSemiNuevo.setFotoPrincipal(fotoPrincipal);
             }
             autoSemiNuevo.setFotos(fotos);
-            autoSemiNuevoService.save(autoSemiNuevo);
+            autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
+            //TODO POSTULAR AUTOS
+            if(!autoSemiNuevo.getValidado()){
+                googleService.appendData(autoSemiNuevo.serialize(),spreadsheetAutosId);
+            }
+            ////////////
             return ResponseService.genSuccess(null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseService.genError("fallo", HttpStatus.BAD_REQUEST);
+            return ResponseService.genError("fallo", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -113,9 +128,20 @@ public class CarPostController {
     @PostMapping(value = "/interesadoCompra")
     @ResponseBody
     @Transactional
-    public ResponseEntity<Object> intCompra(@RequestBody String xd) {
-        return ResponseService.genSuccess("XD");
+    public ResponseEntity<Object> intCompra(@RequestBody InteresadoCompra interesadoCompra) {
+        try{
+            if(!autoSemiNuevoService.existsById(interesadoCompra.getAutoSemiNuevoId())){
+                return ResponseService.genError("no se encontro el auto o no se envio su id", HttpStatus.BAD_REQUEST);
+            }
+            googleService.appendData(interesadoCompra.serialize(),spreadsheetInteresadosId);
+            return ResponseService.genSuccess("success");
+        }catch (Exception e){
+            return ResponseService.genError("fallo", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
+////////////////
+
 
     @GetMapping(value = "/{id}")
     @ResponseBody

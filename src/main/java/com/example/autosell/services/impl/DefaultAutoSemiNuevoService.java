@@ -31,7 +31,7 @@ public class DefaultAutoSemiNuevoService implements AutoSemiNuevoService {
 
     @Override
     public List<AutoSemiNuevo> getAll() {
-        return null;
+        return (List<AutoSemiNuevo>) autoSemiNuevoRepository.findAll();
     }
 
     @Override

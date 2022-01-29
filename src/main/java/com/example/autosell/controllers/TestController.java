@@ -3,10 +3,13 @@ package com.example.autosell.controllers;
 import com.example.autosell.Setup;
 import com.example.autosell.entities.AutoSemiNuevo;
 import com.example.autosell.services.AmazonService;
+import com.example.autosell.services.AutoSemiNuevoService;
+import com.example.autosell.services.GoogleService;
 import com.example.autosell.utils.errors.ResponseService;
 import com.sendgrid.Response;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -58,7 +62,25 @@ public class TestController {
         return ResponseService.genSuccess(new AutoSemiNuevo());
     }
 
+    @Autowired
+    GoogleService googleService;
 
-
+    @Autowired
+    AutoSemiNuevoService autoSemiNuevoService;
+    @Value("${spreadsheet.autos}")
+    String spreadsheetAutosId;
+    @PostMapping("/google")
+    @ResponseBody
+    public ResponseEntity<Object> test() {
+        try{
+            for (AutoSemiNuevo autoSemiNuevo: autoSemiNuevoService.getAll()){
+                googleService.appendData(autoSemiNuevo.serialize(),spreadsheetAutosId);
+            }
+            return ResponseService.genSuccess("interesante");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseService.genError("fallo?",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

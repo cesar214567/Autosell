@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -466,6 +470,54 @@ public class AutoSemiNuevo implements Cloneable {
         this.setSerie(autoSemiNuevo.getSerie());
 
     }
+
+    public String checkVoid(Object temp) {
+        return temp == null ? "null" : temp.toString();
+    }
+
+    public List<Object> serialize(){
+        List<Object> serializedData = new ArrayList<>();
+
+        serializedData.add(checkVoid(id));
+        serializedData.add(checkVoid(anoFabricacion));
+        serializedData.add(checkVoid(choques));
+        serializedData.add(checkVoid(cilindrada));
+        serializedData.add(checkVoid(color));
+        serializedData.add(checkVoid(comprado));
+        serializedData.add(checkVoid(correoDueno));
+        serializedData.add(checkVoid(descripcion));
+        serializedData.add(checkVoid(fallaMecanica));
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        serializedData.add(checkVoid(dateFormat.format(fechaPublicacion)));
+
+        serializedData.add(checkVoid(fotoPrincipal));
+        serializedData.add(checkVoid(fumado));
+        serializedData.add(checkVoid(kilometraje));
+        serializedData.add(checkVoid(llaves));
+        serializedData.add(checkVoid(locacion));
+        serializedData.add(checkVoid(mantenimiento));
+        serializedData.add(checkVoid(marca));
+        serializedData.add(checkVoid(modelo));
+        serializedData.add(checkVoid(nombreDueno));
+        serializedData.add(checkVoid(numeroCilindros));
+        serializedData.add(checkVoid(numeroPuertas));
+        serializedData.add(checkVoid(placa));
+        serializedData.add(checkVoid(precioVenta));
+        serializedData.add(checkVoid(serie));
+        serializedData.add(checkVoid(telefonoDueno));
+        serializedData.add(checkVoid(tipoCambios));
+        serializedData.add(checkVoid(tipoCarroceria));
+        serializedData.add(checkVoid(tipoCombustible));
+        serializedData.add(checkVoid(tipoTraccion));
+        serializedData.add(checkVoid(unicoDueno));
+        serializedData.add(checkVoid(version));
+        serializedData.add(checkVoid(vin));
+        serializedData.addAll(fotos);
+
+        return serializedData;
+    }
+
 
 
 }
