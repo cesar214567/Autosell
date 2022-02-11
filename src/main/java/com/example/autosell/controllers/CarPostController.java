@@ -77,6 +77,9 @@ public class CarPostController {
 
             ObjectMapper mapper = new ObjectMapper();
             AutoSemiNuevo autoSemiNuevo = mapper.readValue(model, AutoSemiNuevo.class);
+            if (autoSemiNuevo.getValidado()==null ){
+                return ResponseService.genError("no se envio la validacion del carro",HttpStatus.BAD_REQUEST);
+            }
             //public ResponseEntity<Object> post(@RequestBody AutoSemiNuevo autoSemiNuevo){
             List<AutoSemiNuevo> temp = autoSemiNuevoService.getByPlaca(autoSemiNuevo.getPlaca());
             if (autoSemiNuevo.getPlaca() == null) {
