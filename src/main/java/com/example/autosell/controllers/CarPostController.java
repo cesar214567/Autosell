@@ -96,12 +96,15 @@ public class CarPostController {
             autoSemiNuevo.setFechaPublicacion(new Date());
             List<String> fotos = new ArrayList<>();
             List<Accesorio> accesoriosList = new ArrayList<>();
-            for (Accesorio accesorio : autoSemiNuevo.getAccesorios()) {
-                Accesorio accesorioTemp = accesorioService.getById(accesorio.getId());
-                if (accesorioTemp != null) {
-                    accesoriosList.add(accesorioTemp);
+            if (autoSemiNuevo.getValidado()) {
+                for (Accesorio accesorio : autoSemiNuevo.getAccesorios()) {
+                    Accesorio accesorioTemp = accesorioService.getById(accesorio.getId());
+                    if (accesorioTemp != null) {
+                        accesoriosList.add(accesorioTemp);
+                    }
                 }
             }
+
             autoSemiNuevo.setAccesorios(accesoriosList);
             autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
             final Long id = autoSemiNuevo.getId();
@@ -137,7 +140,7 @@ public class CarPostController {
                 return ResponseService.genError("no se encontro el auto o no se envio su id", HttpStatus.BAD_REQUEST);
             }
             googleService.appendData(interesadoCompra.serialize(),spreadsheetInteresadosId);
-            return ResponseService.genSuccess("success");
+            return ResponseService.genSuccess(null);
         }catch (Exception e){
             return ResponseService.genError("fallo", HttpStatus.INTERNAL_SERVER_ERROR);
         }

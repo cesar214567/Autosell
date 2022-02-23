@@ -29,12 +29,12 @@ public class AutosellApplication extends SpringBootServletInitializer {
     @Bean
     InitializingBean sendDatabase() {
         return () -> {
-            /*
+
             Users usuario = new Users();
             usuario.setEmail("cesar.madera@utec.edu.pe");
             usuario.setPassword("autosell");
             usersService.save(usuario);
-            */
+
 
             /*Usuario usuario1 = new Usuario();
             usuario1.setRol("REMAX");
