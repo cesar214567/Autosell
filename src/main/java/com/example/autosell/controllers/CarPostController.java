@@ -77,6 +77,9 @@ public class CarPostController {
 
             ObjectMapper mapper = new ObjectMapper();
             AutoSemiNuevo autoSemiNuevo = mapper.readValue(model, AutoSemiNuevo.class);
+            if (autoSemiNuevo.getMarca()==null || autoSemiNuevo.getModelo()==null || autoSemiNuevo.getTipoCarroceria() ==null){
+                return ResponseService.genError("no se enviaron los datos del carro",HttpStatus.BAD_REQUEST);
+            }
             if (autoSemiNuevo.getValidado()==null ){
                 return ResponseService.genError("no se envio la validacion del carro",HttpStatus.BAD_REQUEST);
             }
@@ -109,11 +112,11 @@ public class CarPostController {
             autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
             final Long id = autoSemiNuevo.getId();
             (multipartFiles).forEach(file -> {
-                fotos.add(amazonService.uploadFile(file, "", "fotosAutos/" + id.toString()));
+                fotos.add("https//"+amazonService.uploadFile(file, "", "fotosAutos/" + id.toString()));
             });
             if (firstFile != null) {
                 String fotoPrincipal = amazonService.uploadFile(firstFile, "", "fotosAutos/" + id.toString());
-                autoSemiNuevo.setFotoPrincipal(fotoPrincipal);
+                autoSemiNuevo.setFotoPrincipal("https//"+fotoPrincipal);
             }
             autoSemiNuevo.setFotos(fotos);
             autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
@@ -128,9 +131,7 @@ public class CarPostController {
             return ResponseService.genError("fallo", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    //TODO xDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDd
-
+    
     @PostMapping(value = "/interesadoCompra")
     @ResponseBody
     @Transactional
@@ -146,8 +147,6 @@ public class CarPostController {
         }
 
     }
-////////////////
-
 
     @GetMapping(value = "/{id}")
     @ResponseBody
@@ -281,11 +280,10 @@ public class CarPostController {
                 }
             });
             temp.setFotos(autoSemiNuevo.getFotos());
-            (multipartFiles).forEach(file->temp.getFotos().add(amazonService.uploadFile(file,"","fotosAutos/"+ temp.getId().toString())));
-
+            (multipartFiles).forEach(file->temp.getFotos().add("https//"+amazonService.uploadFile(file,"","fotosAutos/"+ temp.getId().toString())));
             if(firstFile!=null){
                 if(temp.getFotoPrincipal()!=null)amazonService.deleteFileFromS3Bucket(temp.getFotoPrincipal());
-                temp.setFotoPrincipal(amazonService.uploadFile(firstFile,"","fotosAutos/"+ temp.getId().toString()));
+                temp.setFotoPrincipal("https//"+amazonService.uploadFile(firstFile,"","fotosAutos/"+ temp.getId().toString()));
 
             }
             autoSemiNuevoService.save(temp);
