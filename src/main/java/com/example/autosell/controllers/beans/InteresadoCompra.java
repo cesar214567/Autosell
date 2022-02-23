@@ -12,6 +12,8 @@ public class InteresadoCompra {
 
     Long autoSemiNuevoId;
 
+    String placa;
+
     String nombres;
 
     String numTelefono;
@@ -29,6 +31,7 @@ public class InteresadoCompra {
         List<Object> serializedData = new ArrayList<>();
 
         serializedData.add(checkVoid(autoSemiNuevoId));
+        serializedData.add(checkVoid(placa));
         serializedData.add(checkVoid(nombres));
         serializedData.add(checkVoid(numTelefono));
         serializedData.add(checkVoid(correo));
