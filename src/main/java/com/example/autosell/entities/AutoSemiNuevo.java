@@ -3,6 +3,7 @@ package com.example.autosell.entities;
 import com.example.autosell.utils.entities.Accesorio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Data
 public class AutoSemiNuevo implements Cloneable {
     @Column(name = "id_auto_semi_nuevo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,6 +109,9 @@ public class AutoSemiNuevo implements Cloneable {
     String mantenimiento;
 
     @Column
+    String tag;
+
+    @Column
     Boolean unicoDueno;
 
     @Column
@@ -124,309 +129,53 @@ public class AutoSemiNuevo implements Cloneable {
     @ElementCollection
     List<String> fotos;
 
+    @JoinColumn(name = "registrador")
+    @JsonIgnoreProperties({"password"})
+    @ManyToOne
+    Users registrador;
+
+    @Column
+    String canalRegistro;
+
+    @Column
+    String detalleRegistro;
+
+    @JoinColumn(name = "sellout")
+    @JsonIgnoreProperties({"password"})
+    @OneToOne
+    Users sellout;
+
+    @Column
+    String canalVenta;
+
+    @Column
+    String detalleVenta;
+
+    @Column
+    Boolean ruc;
+
+    @Column
+    String documento;
+
+    @Column
+    String dniComprador;
+
+    @Column
+    String nombreComprador;
+
+    @Column
+    Float precioFinalVenta;
+
+    @Column
+    Float comision;
+
+    @Column
+    Float margen;
 
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getMantenimiento() {
-        return mantenimiento;
-    }
-
-    public void setMantenimiento(String mantenimiento) {
-        this.mantenimiento = mantenimiento;
-    }
-
-    public Boolean getUnicoDueno() {
-        return unicoDueno;
-    }
-
-    public void setUnicoDueno(Boolean unicoDueno) {
-        this.unicoDueno = unicoDueno;
-    }
-
-    public Boolean getValidado() {
-        return validado;
-    }
-
-    public void setValidado(Boolean validado) {
-        this.validado = validado;
-    }
-
-    @JsonIgnore
-    public String getNombredeauto(){
-        return marca+" "+modelo+" de tipo "+tipoCarroceria;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Float getPrecioVenta() {
-        return precioVenta;
-    }
-
-    public void setPrecioVenta(Float precioVenta) {
-        this.precioVenta = precioVenta;
-    }
-
-    public Long getKilometraje() {
-        return kilometraje;
-    }
-
-    public void setKilometraje(Long kilometraje) {
-        this.kilometraje = kilometraje;
-    }
-
-
-    public Boolean getComprado() {
-        return comprado;
-    }
-
-    public void setComprado(Boolean comprado) {
-        this.comprado = comprado;
-    }
-
-    public Date getFechaPublicacion() {
-        return fechaPublicacion;
-    }
-
-    public void setFechaPublicacion(Date fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
-    public String getSerie() {
-        return serie;
-    }
-
-    public void setSerie(String serie) {
-        this.serie = serie;
-    }
-
-    public String getCorreoDueno() {
-        return correoDueno;
-    }
-
-    public void setCorreoDueno(String correoDueno) {
-        this.correoDueno = correoDueno;
-    }
-
-    public String getNombreDueno() {
-        return nombreDueno;
-    }
-
-    public void setNombreDueno(String nombreDueno) {
-        this.nombreDueno = nombreDueno;
-    }
-
-    public String getTelefonoDueno() {
-        return telefonoDueno;
-    }
-
-    public void setTelefonoDueno(String telefonoDueno) {
-        this.telefonoDueno = telefonoDueno;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public Integer getAnoFabricacion() {
-        return anoFabricacion;
-    }
-
-    public void setAnoFabricacion(Integer anoFabricacion) {
-        this.anoFabricacion = anoFabricacion;
-    }
-
-    public String getTipoCambios() {
-        return tipoCambios;
-    }
-
-    public void setTipoCambios(String tipoCambios) {
-        this.tipoCambios = tipoCambios;
-    }
-
-    public String getTipoCombustible() {
-        return tipoCombustible;
-    }
-
-    public void setTipoCombustible(String tipoCombustible) {
-        this.tipoCombustible = tipoCombustible;
-    }
-
-    public String getTipoCarroceria() {
-        return tipoCarroceria;
-    }
-
-    public void setTipoCarroceria(String tipoCarroceria) {
-        this.tipoCarroceria = tipoCarroceria;
-    }
-
-    public Float getCilindrada() {
-        return cilindrada;
-    }
-
-    public void setCilindrada(Float cilindrada) {
-        this.cilindrada = cilindrada;
-    }
-
-    public Integer getNumeroPuertas() {
-        return numeroPuertas;
-    }
-
-    public void setNumeroPuertas(Integer numeroPuertas) {
-        this.numeroPuertas = numeroPuertas;
-    }
-
-    public String getTipoTraccion() {
-        return tipoTraccion;
-    }
-
-    public void setTipoTraccion(String tipoTraccion) {
-        this.tipoTraccion = tipoTraccion;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Integer getNumeroCilindros() {
-        return numeroCilindros;
-    }
-
-    public void setNumeroCilindros(Integer numeroCilindros) {
-        this.numeroCilindros = numeroCilindros;
-    }
-
-    public List<Accesorio> getAccesorios() {
-        return accesorios;
-    }
-
-    public void setAccesorios(List<Accesorio> accesorios) {
-        this.accesorios = accesorios;
-    }
-
-    public String getFotoPrincipal() {
-        return fotoPrincipal;
-    }
-
-    public void setFotoPrincipal(String fotoPrincipal) {
-        this.fotoPrincipal = fotoPrincipal;
-    }
-
-    public List<String> getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(List<String> fotos) {
-        this.fotos = fotos;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-
-
-    public Integer getChoques() {
-        return choques;
-    }
-
-    public void setChoques(Integer choques) {
-        this.choques = choques;
-    }
-
-    public Boolean getFallaMecanica() {
-        return fallaMecanica;
-    }
-
-    public void setFallaMecanica(Boolean fallaMecanica) {
-        this.fallaMecanica = fallaMecanica;
-    }
-
-    public Boolean getLlaves() {
-        return llaves;
-    }
-
-    public void setLlaves(Boolean llaves) {
-        this.llaves = llaves;
-    }
-
-    public Boolean getFumado() {
-        return fumado;
-    }
-
-    public void setFumado(Boolean fumado) {
-        this.fumado = fumado;
-    }
-
-    public String getLocacion() {
-        return locacion;
-    }
-
-    public void setLocacion(String locacion) {
-        this.locacion = locacion;
-    }
-
-    public String getVin() {
-        return vin;
-    }
-
-    public void setVin(String vin) {
-        this.vin = vin;
-    }
-
-
 
     public void info(AutoSemiNuevo autoSemiNuevo){
 
@@ -456,6 +205,8 @@ public class AutoSemiNuevo implements Cloneable {
         if(this.llaves!=null)autoSemiNuevo.setLlaves(this.llaves);
         if(this.fumado!=null)autoSemiNuevo.setFumado(this.fumado);
         if(this.vin!=null)autoSemiNuevo.setVin(this.vin);
+        if(this.enabled!=null)autoSemiNuevo.setEnabled(this.enabled);
+        if(this.validado!=null)autoSemiNuevo.setValidado(this.validado);
 
 
     }
@@ -470,6 +221,48 @@ public class AutoSemiNuevo implements Cloneable {
         this.setSerie(autoSemiNuevo.getSerie());
 
     }
+
+    public void sellInfo(AutoSemiNuevo autoSemiNuevo){
+        if(this.sellout!=null)autoSemiNuevo.setSellout(this.sellout);
+        if(this.canalVenta!=null)autoSemiNuevo.setCanalVenta(this.canalVenta);
+        if(this.detalleVenta!=null)autoSemiNuevo.setDetalleVenta(this.detalleVenta);
+        if(this.ruc!=null)autoSemiNuevo.setRuc(this.ruc);
+        if(this.documento!=null)autoSemiNuevo.setDocumento(this.documento);
+        if(this.dniComprador!=null)autoSemiNuevo.setDniComprador(this.dniComprador);
+        if(this.nombreComprador!=null)autoSemiNuevo.setNombreComprador(this.nombreComprador);
+        if(this.precioFinalVenta!=null)autoSemiNuevo.setPrecioFinalVenta(this.precioFinalVenta);
+        if(this.comision!=null)autoSemiNuevo.setComision(this.comision);
+
+    }
+
+    public List<Object> serializeSell() {
+        List<Object> serializedData = new ArrayList<>();
+
+        serializedData.add(checkVoid(id));
+        if (registrador != null) {
+            serializedData.add(checkVoid(registrador.getEmail()));
+        } else {
+            serializedData.add("null");
+        }
+        serializedData.add(checkVoid(canalRegistro));
+        serializedData.add(checkVoid(detalleRegistro));
+        if (sellout != null){
+            serializedData.add(checkVoid(sellout.getEmail()));
+        }else{
+            serializedData.add("null");
+        }
+        serializedData.add(checkVoid(canalVenta));
+        serializedData.add(checkVoid(detalleVenta));
+        serializedData.add(checkVoid(ruc));
+        serializedData.add(checkVoid(documento));
+        serializedData.add(checkVoid(dniComprador));
+        serializedData.add(checkVoid(nombreComprador));
+        serializedData.add(checkVoid(precioFinalVenta));
+        serializedData.add(checkVoid(comision));
+        serializedData.add(checkVoid(margen));
+        return serializedData;
+    }
+
 
     public String checkVoid(Object temp) {
         return temp == null ? "null" : temp.toString();
@@ -513,6 +306,7 @@ public class AutoSemiNuevo implements Cloneable {
         serializedData.add(checkVoid(unicoDueno));
         serializedData.add(checkVoid(version));
         serializedData.add(checkVoid(vin));
+
         serializedData.addAll(fotos);
 
         return serializedData;

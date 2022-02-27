@@ -1,9 +1,12 @@
 package com.example.autosell.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@Data
 public class Users {
 
     @Column(name = "id_users")
@@ -16,7 +19,6 @@ public class Users {
 
     @Column(length = 100)
     String password;
-
 
     public Long getId() {
         return id;

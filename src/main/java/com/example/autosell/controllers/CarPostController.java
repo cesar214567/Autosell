@@ -4,6 +4,7 @@ package com.example.autosell.controllers;
 import com.example.autosell.Setup;
 import com.example.autosell.controllers.beans.FiltrosBean;
 import com.example.autosell.controllers.beans.InteresadoCompra;
+import com.example.autosell.repositories.UsersRepository;
 import com.example.autosell.services.*;
 import com.example.autosell.utils.entities.Accesorio;
 import com.example.autosell.utils.errors.ResponseService;
@@ -12,6 +13,7 @@ import com.example.autosell.entities.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -48,10 +50,14 @@ public class CarPostController {
     @Autowired
     GoogleService googleService;
 
+    @Autowired
+    UsersService usersService;
     @Value("${spreadsheet.autos}")
     String spreadsheetAutosId;
     @Value("${spreadsheet.interesados}")
     String spreadsheetInteresadosId;
+    @Value("${spreadsheet.ventas}")
+    String spreadsheetVentasId;
 
 
     @PostMapping
@@ -112,11 +118,11 @@ public class CarPostController {
             autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
             final Long id = autoSemiNuevo.getId();
             (multipartFiles).forEach(file -> {
-                fotos.add("https//"+amazonService.uploadFile(file, "", "fotosAutos/" + id.toString()));
+                fotos.add(amazonService.uploadFile(file, "", "fotosAutos/" + id.toString()));
             });
             if (firstFile != null) {
                 String fotoPrincipal = amazonService.uploadFile(firstFile, "", "fotosAutos/" + id.toString());
-                autoSemiNuevo.setFotoPrincipal("https//"+fotoPrincipal);
+                autoSemiNuevo.setFotoPrincipal(fotoPrincipal);
             }
             autoSemiNuevo.setFotos(fotos);
             autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
@@ -164,12 +170,13 @@ public class CarPostController {
     }
 
 
-    @GetMapping(value = "/enabled")
+    @GetMapping(value = "/query")
     @ResponseBody
     @Transactional
-    public ResponseEntity<Object> getEnabled(){
+    public ResponseEntity<Object> getEnabled(@RequestParam("enabled")Boolean enabled,@RequestParam("comprado")Boolean comprado,@RequestParam("validado")Boolean validado){
         try{
-            return ResponseService.genSuccess(autoSemiNuevoService.getAllEnabled(true,true,false));
+            System.out.println(enabled);
+            return ResponseService.genSuccess(autoSemiNuevoService.getAllEnabled(enabled,validado,comprado));
         }catch (Exception e){
             return ResponseService.genError("fallo",HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -180,7 +187,7 @@ public class CarPostController {
     @Transactional
     public ResponseEntity<Object> getAll() throws SQLException {
         try{
-            return ResponseService.genSuccess(autoSemiNuevoService.getAllEnabled(true,true,false));
+            return ResponseService.genSuccess(autoSemiNuevoService.getAll());
         }catch (Exception e){
             e.printStackTrace();
             return ResponseService.genError("fallo",HttpStatus.INTERNAL_SERVER_ERROR);
@@ -192,9 +199,9 @@ public class CarPostController {
     @GetMapping(value = "/enabled/{pageId}")
     @ResponseBody
     @Transactional
-    public ResponseEntity<Object> getEnabledPaginated(@PathVariable("pageId") Integer pageId){
+    public ResponseEntity<Object> getEnabledPaginated(@PathVariable("pageId") Integer pageId,@RequestParam("enabled")Boolean enabled,@RequestParam("comprado")Boolean comprado,@RequestParam("validado")Boolean validado){
         try{
-            return ResponseService.genSuccess(autoSemiNuevoService.getAllEnabled(true,true,false,PageRequest.of(pageId,8, Sort.by("fechaPublicacion").descending())));
+            return ResponseService.genSuccess(autoSemiNuevoService.getAllEnabled(enabled,validado,comprado,PageRequest.of(pageId,8, Sort.by("fechaPublicacion").descending())));
         }catch (Exception e){
             return ResponseService.genError("fallo",HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -280,10 +287,10 @@ public class CarPostController {
                 }
             });
             temp.setFotos(autoSemiNuevo.getFotos());
-            (multipartFiles).forEach(file->temp.getFotos().add("https//"+amazonService.uploadFile(file,"","fotosAutos/"+ temp.getId().toString())));
+            (multipartFiles).forEach(file->temp.getFotos().add(amazonService.uploadFile(file,"","fotosAutos/"+ temp.getId().toString())));
             if(firstFile!=null){
                 if(temp.getFotoPrincipal()!=null)amazonService.deleteFileFromS3Bucket(temp.getFotoPrincipal());
-                temp.setFotoPrincipal("https//"+amazonService.uploadFile(firstFile,"","fotosAutos/"+ temp.getId().toString()));
+                temp.setFotoPrincipal(amazonService.uploadFile(firstFile,"","fotosAutos/"+ temp.getId().toString()));
 
             }
             autoSemiNuevoService.save(temp);
@@ -362,6 +369,36 @@ public class CarPostController {
         }catch (Exception e){
             return ResponseService.genError("fallo",HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/venta")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<Object> venta(@RequestBody AutoSemiNuevo autoSemiNuevo) {
+        try{
+            if(autoSemiNuevo.getId()==null || autoSemiNuevo.getComision()==null || autoSemiNuevo.getPrecioFinalVenta()==null || autoSemiNuevo.getSellout()==null || autoSemiNuevo.getSellout().getId()==null){
+                return ResponseService.genError("no se enviaron los datos correctos",HttpStatus.BAD_REQUEST);
+            }
+            AutoSemiNuevo temp = autoSemiNuevoService.getById(autoSemiNuevo.getId());
+            if(temp == null){
+                return ResponseService.genError("no se encontro el auto",HttpStatus.BAD_REQUEST);
+            }
+            if(temp.getComprado()){
+                return ResponseService.genError("el auto ya esta siendo vendido",HttpStatus.CONFLICT);
+            }
+            temp.setComprado(true);
+            autoSemiNuevo.sellInfo(temp);
+            temp.setSellout(usersService.getById(temp.getSellout().getId()));
+            temp.setMargen(temp.getPrecioFinalVenta()*temp.getComision());
+            autoSemiNuevoService.save(temp);
+            googleService.appendData(temp.serializeSell(),spreadsheetVentasId);
+            return ResponseService.genSuccess(temp);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseService.genError("fallo en el servidor",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 
 }

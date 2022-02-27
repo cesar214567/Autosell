@@ -71,7 +71,7 @@ public class DefaultAmazonService implements AmazonService {
             }else{
                 fileName = dir+"/" + generateFileName(multipartFile);
             }
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            fileUrl = "https://"+endpointUrl + "/" + bucketName + "/" + fileName;
             System.out.println(uploadFileTos3bucket(fileName, file));
               file.delete();
         } catch (Exception e) {
