@@ -403,6 +403,7 @@ public class CarPostController {
                 return ResponseService.genError("el auto ya esta siendo vendido",HttpStatus.CONFLICT);
             }
             temp.setComprado(true);
+            temp.setEnabled(false);
             autoSemiNuevo.sellInfo(temp);
             temp.setSellout(usersService.getById(autoSemiNuevo.getSellout().getId()));
             temp.setMargen(temp.getPrecioFinalVenta()*temp.getComision());
