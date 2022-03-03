@@ -158,9 +158,6 @@ public class AutoSemiNuevo implements Cloneable {
     String documento;
 
     @Column
-    String dniComprador;
-
-    @Column
     String nombreComprador;
 
     @Column
@@ -228,7 +225,6 @@ public class AutoSemiNuevo implements Cloneable {
         if(this.detalleVenta!=null)autoSemiNuevo.setDetalleVenta(this.detalleVenta);
         if(this.ruc!=null)autoSemiNuevo.setRuc(this.ruc);
         if(this.documento!=null)autoSemiNuevo.setDocumento(this.documento);
-        if(this.dniComprador!=null)autoSemiNuevo.setDniComprador(this.dniComprador);
         if(this.nombreComprador!=null)autoSemiNuevo.setNombreComprador(this.nombreComprador);
         if(this.precioFinalVenta!=null)autoSemiNuevo.setPrecioFinalVenta(this.precioFinalVenta);
         if(this.comision!=null)autoSemiNuevo.setComision(this.comision);
@@ -255,7 +251,6 @@ public class AutoSemiNuevo implements Cloneable {
         serializedData.add(checkVoid(detalleVenta));
         serializedData.add(checkVoid(ruc));
         serializedData.add(checkVoid(documento));
-        serializedData.add(checkVoid(dniComprador));
         serializedData.add(checkVoid(nombreComprador));
         serializedData.add(checkVoid(precioFinalVenta));
         serializedData.add(checkVoid(comision));
