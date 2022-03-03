@@ -221,12 +221,28 @@ public class CarPostController {
     @PutMapping(value = "/validate/{id}")
     @ResponseBody
     @Transactional
-    public ResponseEntity<Object> modify(@PathVariable("id")Long id ){
+    public ResponseEntity<Object> modifyValidated(@PathVariable("id")Long id ){
         AutoSemiNuevo autoSemiNuevo = autoSemiNuevoService.getById(id);
         if(autoSemiNuevo==null){
             return ResponseService.genError("no se encontro el post con ese id",HttpStatus.BAD_REQUEST);
         }
         autoSemiNuevo.setValidado(true);
+        try{
+            return ResponseService.genSuccess(autoSemiNuevoService.save(autoSemiNuevo));
+        }catch (Exception e){
+            return ResponseService.genError("fallo",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/enable/{id}")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<Object> modifyEnabled(@PathVariable("id")Long id ){
+        AutoSemiNuevo autoSemiNuevo = autoSemiNuevoService.getById(id);
+        if(autoSemiNuevo==null){
+            return ResponseService.genError("no se encontro el post con ese id",HttpStatus.BAD_REQUEST);
+        }
+        autoSemiNuevo.setEnabled(!autoSemiNuevo.getEnabled());
         try{
             return ResponseService.genSuccess(autoSemiNuevoService.save(autoSemiNuevo));
         }catch (Exception e){
