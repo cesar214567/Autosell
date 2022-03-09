@@ -4,6 +4,7 @@ import com.example.autosell.utils.entities.Accesorio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -17,7 +18,16 @@ import java.util.List;
 @Data
 public class AutoSemiNuevo implements Cloneable {
     @Column(name = "id_auto_semi_nuevo")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "auto-semi-nuevo-generator")
+    @GenericGenerator(
+            name = "auto-semi-nuevo-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "auto_semi_nuevo_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "118"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
     Long id;
 
@@ -111,21 +121,6 @@ public class AutoSemiNuevo implements Cloneable {
     @Column
     String tag;
 
-    @Column
-    Boolean unicoDueno;
-
-    @Column
-    Integer choques;
-
-    @Column
-    Boolean fallaMecanica;
-
-    @Column
-    Boolean llaves;
-
-    @Column
-    Boolean fumado;
-
     @ElementCollection
     List<String> fotos;
 
@@ -169,6 +164,9 @@ public class AutoSemiNuevo implements Cloneable {
     @Column
     Float margen;
 
+    @Column
+    Date fechaVenta;
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
@@ -196,11 +194,6 @@ public class AutoSemiNuevo implements Cloneable {
         if(this.descripcion!=null)autoSemiNuevo.setDescripcion(this.descripcion);
         if(this.version!=null)autoSemiNuevo.setVersion(this.version);
         if(this.mantenimiento!=null)autoSemiNuevo.setMantenimiento(this.mantenimiento);
-        if(this.unicoDueno!=null)autoSemiNuevo.setUnicoDueno(this.unicoDueno);
-        if(this.choques!=null)autoSemiNuevo.setChoques(this.choques);
-        if(this.fallaMecanica!=null)autoSemiNuevo.setFallaMecanica(this.fallaMecanica);
-        if(this.llaves!=null)autoSemiNuevo.setLlaves(this.llaves);
-        if(this.fumado!=null)autoSemiNuevo.setFumado(this.fumado);
         if(this.vin!=null)autoSemiNuevo.setVin(this.vin);
         if(this.enabled!=null)autoSemiNuevo.setEnabled(this.enabled);
         if(this.validado!=null)autoSemiNuevo.setValidado(this.validado);
@@ -228,7 +221,6 @@ public class AutoSemiNuevo implements Cloneable {
         if(this.nombreComprador!=null)autoSemiNuevo.setNombreComprador(this.nombreComprador);
         if(this.precioFinalVenta!=null)autoSemiNuevo.setPrecioFinalVenta(this.precioFinalVenta);
         if(this.comision!=null)autoSemiNuevo.setComision(this.comision);
-
     }
 
     public List<Object> serializeSell() {
@@ -255,6 +247,10 @@ public class AutoSemiNuevo implements Cloneable {
         serializedData.add(checkVoid(precioFinalVenta));
         serializedData.add(checkVoid(comision));
         serializedData.add(checkVoid(margen));
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        serializedData.add(checkVoid(dateFormat.format(fechaVenta)));
+
         return serializedData;
     }
 
@@ -268,21 +264,17 @@ public class AutoSemiNuevo implements Cloneable {
 
         serializedData.add(checkVoid(id));
         serializedData.add(checkVoid(anoFabricacion));
-        serializedData.add(checkVoid(choques));
         serializedData.add(checkVoid(cilindrada));
         serializedData.add(checkVoid(color));
         serializedData.add(checkVoid(comprado));
         serializedData.add(checkVoid(correoDueno));
         serializedData.add(checkVoid(descripcion));
-        serializedData.add(checkVoid(fallaMecanica));
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         serializedData.add(checkVoid(dateFormat.format(fechaPublicacion)));
 
         serializedData.add(checkVoid(fotoPrincipal));
-        serializedData.add(checkVoid(fumado));
         serializedData.add(checkVoid(kilometraje));
-        serializedData.add(checkVoid(llaves));
         serializedData.add(checkVoid(locacion));
         serializedData.add(checkVoid(mantenimiento));
         serializedData.add(checkVoid(marca));
@@ -298,7 +290,6 @@ public class AutoSemiNuevo implements Cloneable {
         serializedData.add(checkVoid(tipoCarroceria));
         serializedData.add(checkVoid(tipoCombustible));
         serializedData.add(checkVoid(tipoTraccion));
-        serializedData.add(checkVoid(unicoDueno));
         serializedData.add(checkVoid(version));
         serializedData.add(checkVoid(vin));
 

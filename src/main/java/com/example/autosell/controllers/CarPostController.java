@@ -404,6 +404,7 @@ public class CarPostController {
             }
             temp.setComprado(true);
             temp.setEnabled(false);
+            temp.setFechaVenta(new Date());
             autoSemiNuevo.sellInfo(temp);
             temp.setSellout(usersService.getById(autoSemiNuevo.getSellout().getId()));
             temp.setMargen(temp.getPrecioFinalVenta()*temp.getComision());

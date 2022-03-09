@@ -2,7 +2,7 @@ import psycopg2
 import pandas as pd
 import csv
 
-def loadTable(connection, fileName, tableName):
+def loadTable(connection, fileName, tableName,sep=';'):
     with open(fileName, 'r') as file:
         cursor.copy_from(file, tableName, sep=';',null='')
     connection.commit()
@@ -31,7 +31,7 @@ try:
                                      database="postgres")
     cursor = connection.cursor()
     #printSep('carros')
-    #loadTable(connection, 'autoseminuevo2.csv', 'auto_semi_nuevo')
+    loadTable(connection, 'autoseminuevo2.csv', 'auto_semi_nuevo','|')
     #printSep('relaciones')
     #loadTable(connection, 'relaciones.csv', 'usuario_carros_posteados')
     printSep('accesorio')
