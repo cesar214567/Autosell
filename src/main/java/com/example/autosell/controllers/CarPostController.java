@@ -407,7 +407,7 @@ public class CarPostController {
             temp.setFechaVenta(new Date());
             autoSemiNuevo.sellInfo(temp);
             temp.setSellout(usersService.getById(autoSemiNuevo.getSellout().getId()));
-            temp.setMargen(temp.getPrecioFinalVenta()*temp.getComision());
+            temp.setComision(temp.getPrecioFinalVenta()/temp.getMargen());
             autoSemiNuevoService.save(temp);
             googleService.appendData(temp.serializeSell(),spreadsheetVentasId);
             return ResponseService.genSuccess(temp);
