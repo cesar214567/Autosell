@@ -8,6 +8,7 @@ import com.example.autosell.repositories.UsersRepository;
 import com.example.autosell.services.*;
 import com.example.autosell.utils.entities.Accesorio;
 import com.example.autosell.utils.errors.ResponseService;
+import com.example.autosell.utils.parser.Parser;
 import com.example.autosell.utils.services.AccesorioService;
 import com.example.autosell.entities.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -175,9 +176,9 @@ public class CarPostController {
     @Transactional
     public ResponseEntity<Object> getEnabled(@RequestParam("enabled")Boolean enabled,@RequestParam("comprado")Boolean comprado,@RequestParam("validado")Boolean validado){
         try{
-            System.out.println(enabled);
             return ResponseService.genSuccess(autoSemiNuevoService.getAllEnabled(enabled,validado,comprado));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseService.genError("fallo",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

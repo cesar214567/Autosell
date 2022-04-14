@@ -1,11 +1,14 @@
 package com.example.autosell.utils.entities;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Accesorio {
+@Lazy
+public class Accesorio implements Serializable {
     @Column(name = "accesorio_id")
     @GeneratedValue(generator = "accesorio-generator")
     @GenericGenerator(

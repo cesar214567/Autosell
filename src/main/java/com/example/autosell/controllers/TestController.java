@@ -6,8 +6,6 @@ import com.example.autosell.services.AmazonService;
 import com.example.autosell.services.AutoSemiNuevoService;
 import com.example.autosell.services.GoogleService;
 import com.example.autosell.utils.errors.ResponseService;
-import com.sendgrid.Response;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 

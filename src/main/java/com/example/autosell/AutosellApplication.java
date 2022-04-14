@@ -21,67 +21,6 @@ public class AutosellApplication extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return  builder.sources(AutosellApplication.class);
     }
-
-
-    @Autowired
-    UsersService usersService;
-
-    @Bean
-    InitializingBean sendDatabase() {
-        return () -> {
-
-            Users usuario = new Users();
-            usuario.setEmail("cesar.madera@utec.edu.pe");
-            usuario.setPassword("autosell");
-            usersService.save(usuario);
-
-
-            /*Usuario usuario1 = new Usuario();
-            usuario1.setRol("REMAX");
-            usuario1.setCorreo("cesar.madera@utec.edu.com");
-            usuario1.setPassword("uwu");
-            usuario1.setValidated(true);
-            usuario1.setEnabled(true);
-            usuario1.setCantidadCarrosAno(3);
-            usuario1.setBalance((float) 0);
-            usuario1.setForm(new Form());
-            usuario1.getForm().setEstado(true);
-            usuario1.getForm().setUsuario(usuario);
-            usuariosService.save(usuario1);
-
-            Users admin = new Users();
-            admin.setEmail("luis.jauregui@utec.edu.pe");
-            admin.setPassword("uwu");
-            admin.setName("luis");
-            admin.setPermitido(true);
-            admin.setRol("ADMIN");
-            usersService.save(admin);
-
-            Users admin2 = new Users();
-            admin2.setEmail("jonathan.prieto@utec.edu.pe");
-            admin2.setPassword("clicker");
-            admin2.setName("jonathan");
-            admin2.setPermitido(true);
-            admin2.setRol("ADMIN");
-            usersService.save(admin2);
-
-            Usuario usuario2 = new Usuario();
-            usuario2.setRol("PARTICULAR");
-            usuario2.setCorreo("gabriel.spranger@utec.edu.pe");
-            usuario2.setNombre("Gabriel Spranger Rojas");
-            usuario2.setNumDocumento("72985463");
-            usuario2.setNumTelefono((long) 987654321);
-            usuario2.setPassword("uwu");
-            usuario2.setValidated(true);
-            usuario2.setEnabled(true);
-            usuario2.setCantidadCarrosAno(3);
-            usuario2.setBalance((float) 0);
-
-            usuariosService.save(usuario2);
-            */
-
-        };
-    }
 }
 
 

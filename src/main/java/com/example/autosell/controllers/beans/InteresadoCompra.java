@@ -1,13 +1,9 @@
 package com.example.autosell.controllers.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 public class InteresadoCompra {
 
     Long autoSemiNuevoId;
@@ -23,6 +19,62 @@ public class InteresadoCompra {
     String dni;
 
     String apellidos;
+
+    public Long getAutoSemiNuevoId() {
+        return autoSemiNuevoId;
+    }
+
+    public void setAutoSemiNuevoId(Long autoSemiNuevoId) {
+        this.autoSemiNuevoId = autoSemiNuevoId;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getNumTelefono() {
+        return numTelefono;
+    }
+
+    public void setNumTelefono(String numTelefono) {
+        this.numTelefono = numTelefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
 
     private String checkVoid(Object temp) {
         return temp == null ? "null" : temp.toString();

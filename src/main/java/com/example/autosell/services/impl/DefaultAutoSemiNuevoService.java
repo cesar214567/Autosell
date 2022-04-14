@@ -3,11 +3,18 @@ package com.example.autosell.services.impl;
 import com.example.autosell.entities.AutoSemiNuevo;
 import com.example.autosell.repositories.AutoSemiNuevoRepository;
 import com.example.autosell.services.AutoSemiNuevoService;
+import com.example.autosell.utils.parser.Parser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class DefaultAutoSemiNuevoService implements AutoSemiNuevoService {
@@ -36,7 +43,7 @@ public class DefaultAutoSemiNuevoService implements AutoSemiNuevoService {
 
     @Override
     public List<AutoSemiNuevo> getAllEnabled(Boolean enabled, Boolean comprado, Boolean validado, Pageable pageable) {
-        return autoSemiNuevoRepository.findAllByEnabledAndValidadoAndComprado(enabled,comprado,validado,pageable).getContent();
+        return autoSemiNuevoRepository.findByEnabledAndValidadoAndComprado(enabled,comprado,validado,pageable).getContent();
     }
 
     @Override
@@ -45,7 +52,7 @@ public class DefaultAutoSemiNuevoService implements AutoSemiNuevoService {
     }
 
     @Override
-    public List<AutoSemiNuevo> getAllEnabled(Boolean enabled, Boolean validado, Boolean comprado) {
+    public Object getAllEnabled(Boolean enabled, Boolean validado, Boolean comprado){
         return autoSemiNuevoRepository.findAllByEnabledAndValidadoAndComprado(enabled,validado,comprado);
     }
 

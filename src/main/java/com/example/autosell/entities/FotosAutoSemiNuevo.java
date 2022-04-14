@@ -1,9 +1,13 @@
 package com.example.autosell.entities;
 
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class FotosAutoSemiNuevo {
+@Lazy
+public class FotosAutoSemiNuevo implements Serializable {
     @Column(name = "fotos_carro_semi_nuevo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

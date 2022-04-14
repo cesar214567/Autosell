@@ -2,14 +2,15 @@ package com.example.autosell.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
-@Data
-public class Users {
+@Lazy
+public class Users implements Serializable {
 
     @Column(name = "id_users")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +48,6 @@ public class Users {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 }

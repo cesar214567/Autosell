@@ -19,8 +19,9 @@ def printSep(text):
 
 try:
     #connection = psycopg2.connect(user="doadmin",
-    #                                 password="p4210mm1twj0yo0f",
-    #                             host="db-clicker-peru-do-user-7725672-0.a.db.ondigitalocean.com",
+    #
+    #                                 password="23EcLS18TNFIqygD",
+    #                             host="db-postgresql-nyc1-93403-do-user-10253325-0.b.db.ondigitalocean.com",
     #                             port="25060",
     #                             database="defaultdb")
 

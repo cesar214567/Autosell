@@ -1,26 +1,30 @@
 package com.example.autosell.repositories;
 
 import com.example.autosell.entities.AutoSemiNuevo;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import javax.persistence.Tuple;
 import javax.transaction.Transactional;
+import java.sql.ResultSet;
 import java.util.List;
 
 
 
 public interface AutoSemiNuevoRepository extends PagingAndSortingRepository<AutoSemiNuevo,Long> {
 
-
-    Page<AutoSemiNuevo> findAllByEnabledAndValidadoAndComprado(Boolean enabled,Boolean validado,Boolean comprado, Pageable pageable);
+    Page<AutoSemiNuevo> findByEnabledAndValidadoAndComprado(Boolean enabled,Boolean validado,Boolean comprado, Pageable pageable);
 
     Long countAllByEnabledAndValidadoAndComprado(Boolean enabled,Boolean validado,Boolean comprado);
 
-    List<AutoSemiNuevo> findAllByEnabledAndValidadoAndComprado(Boolean enabled, Boolean validado, Boolean comprado);
+    @Query(nativeQuery = true,value = "select * from  auto_semi_nuevo a where enabled=:enabled and validado=:validado and comprado=:comprado")
+    List<JSONObject> findAllByEnabledAndValidadoAndComprado(Boolean enabled, Boolean validado, Boolean comprado);
 
     List<AutoSemiNuevo> findAllByPlaca(String placa);
 

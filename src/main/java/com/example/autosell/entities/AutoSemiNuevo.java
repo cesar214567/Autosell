@@ -1,22 +1,21 @@
 package com.example.autosell.entities;
 
 import com.example.autosell.utils.entities.Accesorio;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
-public class AutoSemiNuevo implements Cloneable {
+@Lazy
+public class AutoSemiNuevo implements Cloneable, Serializable {
     @Column(name = "id_auto_semi_nuevo")
     @GeneratedValue(generator = "auto-semi-nuevo-generator")
     @GenericGenerator(
@@ -103,7 +102,8 @@ public class AutoSemiNuevo implements Cloneable {
     @Column
     Date fechaPublicacion;
 
-    @ManyToMany
+    @Lazy
+    @ManyToMany(fetch = FetchType.LAZY)
     List<Accesorio> accesorios;
 
     @Column(length = 1000)
@@ -124,9 +124,10 @@ public class AutoSemiNuevo implements Cloneable {
     @ElementCollection
     List<String> fotos;
 
+    @Lazy
     @JoinColumn(name = "registrador")
     @JsonIgnoreProperties({"password"})
-    @ManyToOne
+    @ManyToOne()
     Users registrador;
 
     @Column
@@ -135,9 +136,10 @@ public class AutoSemiNuevo implements Cloneable {
     @Column
     String detalleRegistro;
 
+    @Lazy
     @JoinColumn(name = "sellout")
     @JsonIgnoreProperties({"password"})
-    @OneToOne
+    @ManyToOne()
     Users sellout;
 
     @Column
@@ -170,6 +172,366 @@ public class AutoSemiNuevo implements Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
+    }
+
+    public String getCorreoDueno() {
+        return correoDueno;
+    }
+
+    public void setCorreoDueno(String correoDueno) {
+        this.correoDueno = correoDueno;
+    }
+
+    public String getNombreDueno() {
+        return nombreDueno;
+    }
+
+    public void setNombreDueno(String nombreDueno) {
+        this.nombreDueno = nombreDueno;
+    }
+
+    public String getTelefonoDueno() {
+        return telefonoDueno;
+    }
+
+    public void setTelefonoDueno(String telefonoDueno) {
+        this.telefonoDueno = telefonoDueno;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public Integer getAnoFabricacion() {
+        return anoFabricacion;
+    }
+
+    public void setAnoFabricacion(Integer anoFabricacion) {
+        this.anoFabricacion = anoFabricacion;
+    }
+
+    public String getTipoCambios() {
+        return tipoCambios;
+    }
+
+    public void setTipoCambios(String tipoCambios) {
+        this.tipoCambios = tipoCambios;
+    }
+
+    public String getTipoCombustible() {
+        return tipoCombustible;
+    }
+
+    public void setTipoCombustible(String tipoCombustible) {
+        this.tipoCombustible = tipoCombustible;
+    }
+
+    public String getTipoCarroceria() {
+        return tipoCarroceria;
+    }
+
+    public void setTipoCarroceria(String tipoCarroceria) {
+        this.tipoCarroceria = tipoCarroceria;
+    }
+
+    public Float getCilindrada() {
+        return cilindrada;
+    }
+
+    public void setCilindrada(Float cilindrada) {
+        this.cilindrada = cilindrada;
+    }
+
+    public Long getKilometraje() {
+        return kilometraje;
+    }
+
+    public void setKilometraje(Long kilometraje) {
+        this.kilometraje = kilometraje;
+    }
+
+    public Integer getNumeroPuertas() {
+        return numeroPuertas;
+    }
+
+    public void setNumeroPuertas(Integer numeroPuertas) {
+        this.numeroPuertas = numeroPuertas;
+    }
+
+    public String getTipoTraccion() {
+        return tipoTraccion;
+    }
+
+    public void setTipoTraccion(String tipoTraccion) {
+        this.tipoTraccion = tipoTraccion;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Integer getNumeroCilindros() {
+        return numeroCilindros;
+    }
+
+    public void setNumeroCilindros(Integer numeroCilindros) {
+        this.numeroCilindros = numeroCilindros;
+    }
+
+    public Float getPrecioVenta() {
+        return precioVenta;
+    }
+
+    public void setPrecioVenta(Float precioVenta) {
+        this.precioVenta = precioVenta;
+    }
+
+    public String getLocacion() {
+        return locacion;
+    }
+
+    public void setLocacion(String locacion) {
+        this.locacion = locacion;
+    }
+
+    public Boolean getComprado() {
+        return comprado;
+    }
+
+    public void setComprado(Boolean comprado) {
+        this.comprado = comprado;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean getValidado() {
+        return validado;
+    }
+
+    public void setValidado(Boolean validado) {
+        this.validado = validado;
+    }
+
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
+    public List<Accesorio> getAccesorios() {
+        return accesorios;
+    }
+
+    public void setAccesorios(List<Accesorio> accesorios) {
+        this.accesorios = accesorios;
+    }
+
+    public String getFotoPrincipal() {
+        return fotoPrincipal;
+    }
+
+    public void setFotoPrincipal(String fotoPrincipal) {
+        this.fotoPrincipal = fotoPrincipal;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getMantenimiento() {
+        return mantenimiento;
+    }
+
+    public void setMantenimiento(String mantenimiento) {
+        this.mantenimiento = mantenimiento;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public List<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
+    }
+
+    public Users getRegistrador() {
+        return registrador;
+    }
+
+    public void setRegistrador(Users registrador) {
+        this.registrador = registrador;
+    }
+
+    public String getCanalRegistro() {
+        return canalRegistro;
+    }
+
+    public void setCanalRegistro(String canalRegistro) {
+        this.canalRegistro = canalRegistro;
+    }
+
+    public String getDetalleRegistro() {
+        return detalleRegistro;
+    }
+
+    public void setDetalleRegistro(String detalleRegistro) {
+        this.detalleRegistro = detalleRegistro;
+    }
+
+    public Users getSellout() {
+        return sellout;
+    }
+
+    public void setSellout(Users sellout) {
+        this.sellout = sellout;
+    }
+
+    public String getCanalVenta() {
+        return canalVenta;
+    }
+
+    public void setCanalVenta(String canalVenta) {
+        this.canalVenta = canalVenta;
+    }
+
+    public String getDetalleVenta() {
+        return detalleVenta;
+    }
+
+    public void setDetalleVenta(String detalleVenta) {
+        this.detalleVenta = detalleVenta;
+    }
+
+    public Boolean getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(Boolean ruc) {
+        this.ruc = ruc;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public String getNombreComprador() {
+        return nombreComprador;
+    }
+
+    public void setNombreComprador(String nombreComprador) {
+        this.nombreComprador = nombreComprador;
+    }
+
+    public Float getPrecioFinalVenta() {
+        return precioFinalVenta;
+    }
+
+    public void setPrecioFinalVenta(Float precioFinalVenta) {
+        this.precioFinalVenta = precioFinalVenta;
+    }
+
+    public Float getComision() {
+        return comision;
+    }
+
+    public void setComision(Float comision) {
+        this.comision = comision;
+    }
+
+    public Float getMargen() {
+        return margen;
+    }
+
+    public void setMargen(Float margen) {
+        this.margen = margen;
+    }
+
+    public Date getFechaVenta() {
+        return fechaVenta;
+    }
+
+    public void setFechaVenta(Date fechaVenta) {
+        this.fechaVenta = fechaVenta;
     }
 
     public void info(AutoSemiNuevo autoSemiNuevo){
