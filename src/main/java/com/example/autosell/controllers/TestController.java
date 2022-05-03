@@ -70,9 +70,7 @@ public class TestController {
     @ResponseBody
     public ResponseEntity<Object> test() {
         try{
-            for (AutoSemiNuevo autoSemiNuevo: autoSemiNuevoService.getAll()){
-                googleService.appendData(autoSemiNuevo.serialize(),spreadsheetAutosId);
-            }
+            googleService.appendData(autoSemiNuevoService.getAll().get(1).serialize(),spreadsheetAutosId);
             return ResponseService.genSuccess("interesante");
         }catch (Exception e){
             e.printStackTrace();

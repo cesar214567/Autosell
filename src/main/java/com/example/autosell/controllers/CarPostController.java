@@ -2,6 +2,7 @@ package com.example.autosell.controllers;
 
 
 import com.example.autosell.Setup;
+import com.example.autosell.controllers.beans.AutoSemiNuevoBean;
 import com.example.autosell.controllers.beans.FiltrosBean;
 import com.example.autosell.controllers.beans.InteresadoCompra;
 import com.example.autosell.repositories.UsersRepository;
@@ -13,6 +14,7 @@ import com.example.autosell.utils.services.AccesorioService;
 import com.example.autosell.entities.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,7 @@ public class CarPostController {
 
             ObjectMapper mapper = new ObjectMapper();
             AutoSemiNuevo autoSemiNuevo = mapper.readValue(model, AutoSemiNuevo.class);
-            if (autoSemiNuevo.getMarca()==null || autoSemiNuevo.getModelo()==null || autoSemiNuevo.getTipoCarroceria() ==null){
+            if (autoSemiNuevo.getMarca()==null || autoSemiNuevo.getModelo()==null){
                 return ResponseService.genError("no se enviaron los datos del carro",HttpStatus.BAD_REQUEST);
             }
             if (autoSemiNuevo.getValidado()==null ){
@@ -128,9 +130,7 @@ public class CarPostController {
             autoSemiNuevo.setFotos(fotos);
             autoSemiNuevo = autoSemiNuevoService.save(autoSemiNuevo);
             //TODO POSTULAR AUTOS
-            if(!autoSemiNuevo.getValidado()){
-                googleService.appendData(autoSemiNuevo.serialize(),spreadsheetAutosId);
-            }
+            googleService.appendData(autoSemiNuevo.serialize(),spreadsheetAutosId);
             ////////////
             return ResponseService.genSuccess(null);
         } catch (Exception e) {

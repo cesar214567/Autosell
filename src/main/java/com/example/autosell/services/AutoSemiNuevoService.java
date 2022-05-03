@@ -1,7 +1,9 @@
 package com.example.autosell.services;
 
+import com.example.autosell.controllers.beans.AutoSemiNuevoBean;
 import com.example.autosell.entities.AutoSemiNuevo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import net.minidev.json.JSONObject;
 import net.minidev.json.parser.ParseException;
 import org.springframework.data.domain.Pageable;
 
@@ -22,7 +24,7 @@ public interface AutoSemiNuevoService {
 
     Long getPages(Boolean enabled, Boolean validado, Boolean comprado);
 
-    Object getAllEnabled(Boolean enabled,Boolean validado,Boolean comprado) throws ParseException, JsonProcessingException;
+    List<AutoSemiNuevoBean> getAllEnabled(Boolean enabled, Boolean validado, Boolean comprado) throws ParseException, JsonProcessingException;
 
     List<AutoSemiNuevo> getAllFromIdList(List<Long> ids);
 

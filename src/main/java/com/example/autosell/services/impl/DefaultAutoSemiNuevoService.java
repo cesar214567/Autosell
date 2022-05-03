@@ -1,5 +1,6 @@
 package com.example.autosell.services.impl;
 
+import com.example.autosell.controllers.beans.AutoSemiNuevoBean;
 import com.example.autosell.entities.AutoSemiNuevo;
 import com.example.autosell.repositories.AutoSemiNuevoRepository;
 import com.example.autosell.services.AutoSemiNuevoService;
@@ -52,8 +53,13 @@ public class DefaultAutoSemiNuevoService implements AutoSemiNuevoService {
     }
 
     @Override
-    public Object getAllEnabled(Boolean enabled, Boolean validado, Boolean comprado){
-        return autoSemiNuevoRepository.findAllByEnabledAndValidadoAndComprado(enabled,validado,comprado);
+    public List<AutoSemiNuevoBean> getAllEnabled(Boolean enabled, Boolean validado, Boolean comprado){
+        List<JSONObject> autosQueried = autoSemiNuevoRepository.findAllByEnabledAndValidadoAndComprado(enabled,validado,comprado);
+        List<AutoSemiNuevoBean> autosBeans = new ArrayList<>();
+        for(JSONObject jsonObject: autosQueried){
+            autosBeans.add(new AutoSemiNuevoBean(jsonObject));
+        }
+        return autosBeans;
     }
 
     @Override

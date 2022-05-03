@@ -559,6 +559,7 @@ public class AutoSemiNuevo implements Cloneable, Serializable {
         if(this.vin!=null)autoSemiNuevo.setVin(this.vin);
         if(this.enabled!=null)autoSemiNuevo.setEnabled(this.enabled);
         if(this.validado!=null)autoSemiNuevo.setValidado(this.validado);
+        if(this.tag!=null)autoSemiNuevo.setTag(this.tag);
 
 
     }
