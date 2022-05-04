@@ -633,7 +633,7 @@ public class AutoSemiNuevo implements Cloneable, Serializable {
         serializedData.add(checkVoid(correoDueno));
         serializedData.add(checkVoid(descripcion));
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         serializedData.add(checkVoid(dateFormat.format(fechaPublicacion)));
 
         serializedData.add(checkVoid(fotoPrincipal));
