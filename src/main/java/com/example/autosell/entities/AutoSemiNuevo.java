@@ -611,7 +611,7 @@ public class AutoSemiNuevo implements Cloneable, Serializable {
         serializedData.add(checkVoid(comision));
         serializedData.add(checkVoid(margen));
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         serializedData.add(checkVoid(dateFormat.format(fechaVenta)));
 
         return serializedData;
